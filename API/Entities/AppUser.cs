@@ -6,5 +6,8 @@
         public required string DisplayName { get; set; }
         public required string Email { get; set; }
 
+        public byte[] PasswordHash { get; set; }
+        public byte[] Passwordsalt { get; set; }
+
     }
 }
