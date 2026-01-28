@@ -15,7 +15,7 @@ export class App implements OnInit{
   protected members = signal<any>([]);
 
   ngOnInit(): void {
-    this.http.get('https://localhost:5001/api/members').subscribe({
+    this.http.get('http://localhost:5001/api/members').subscribe({
       next: response => this.members.set(response),
       error: error => console.log(error),
       complete: () => console.log('Completed the Http Request')

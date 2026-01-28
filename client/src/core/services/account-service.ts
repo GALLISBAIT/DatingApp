@@ -6,7 +6,7 @@ import { inject,Injectable } from '@angular/core';
 })
 export class AccountService {
   private http = inject(HttpClient);
-  baseUrl = 'http://localhost:5001/api/';
+  baseUrl = 'https://localhost:5001/api/';
 
   login(creds: any) {
     return this.http.post(this.baseUrl + 'account/login',creds);
