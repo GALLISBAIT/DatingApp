@@ -1,21 +1,5 @@
 <app-nav></app-nav>
 
-<div class="card bg-base-100 mx-auto mt-24 w-1/2 p-10 shadow-xl">
-
-  <h1 class="text-3xl text-red-500">{{title}}</h1>
-
-  <ul class="list">
-    @for (member of members();track member.id)
-    {
-    <li class="list-row items-center">
-      <img src="/user.png" alt="user avatar"  class="rounded-box size-12">
-      <div>
-        {{member.displayName}}
-      </div>
-    </li>
-    }
-  </ul>
-
-</div>
+<app-home/>
 
 

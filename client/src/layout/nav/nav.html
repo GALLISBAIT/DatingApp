@@ -1,4 +1,4 @@
-<header class="from-primary fixed top-0 z-50 w-full bg-gradient-to-r to-black p-3">
+﻿<header class="from-primary fixed top-0 z-50 w-full bg-gradient-to-r to-black p-3">
   <div class="mx-auto flex items-center gap-6 px-10 align-middle">
     <a class="flex max-h-16 items-center gap-3 border-r-2 border-r-white pr-6 text-white">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -12,13 +12,25 @@
       <a>Messages</a>
     </nav>
     <div class="ml-auto flex gap-3 align-middle">
+      @if (accountService.currentUser(); as user) {
+      <div class="dropdown">
+        <div tabindex="0" role="button" class="flex cursor-pointer items-center gap-3 text-xl text-white">
+          <img src="user.png" alt="user avatar" class="h-8 w-8 rounded-full">
+          <span>{{user.displayName}}</span>
+        </div>
+        <ul tabindex="-1" class="dropdown-content dropdown-end menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+          <li><a>Edit Profile</a></li>
+          <li><a (click)="logout()">Logout</a></li>
+        </ul>
+      </div>
+      } @else {
       <form #loginForm="ngForm" (ngSubmit)="login()" class="flex items-center gap-3">
-        <input [(ngModel)] = "creds.email"
+        <input [(ngModel)]="creds.email"
                name="email"
                type="text"
                class="input"
                placeholder="Email">
-        <input [(ngModel)] = "creds.password"
+        <input [(ngModel)]="creds.password"
                name="password"
                type="password"
                class="input"
@@ -28,6 +40,7 @@
           Login
         </button>
       </form>
+      }
     </div>
   </div>
 </header>
