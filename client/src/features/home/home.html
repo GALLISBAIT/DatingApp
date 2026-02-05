@@ -1,4 +1,4 @@
-﻿<div class="hero bg-base-200 min-h-screen">
+<div class="hero bg-base-200 min-h-screen">
   @if(!registerMode()) {
   <div class="hero-content text-center">
     <div class="flex flex-col" items-center>
@@ -10,14 +10,18 @@
       </h1>
       <p class="py-6">Come on in..all you need to do is sign up</p>
       <div class="flex items-center gap-3">
-        <button (click)="showRegister()" class="btn btn-primary btn-lg">Register</button>
+        <button (click)="showRegister(true)" class="btn btn-primary btn-lg">Register</button>
         <button class="btn btn-primary btn-lg">Learn More</button>
       </div>
     </div>
   </div>
   } @else {
-    <div class="flex justify-center text-center text-2xl">
-      <app-register class="w-full"></app-register>
+    <div class="flex w-full justify-center text-center text-2xl">
+      <app-register
+        class="w-full"
+        (cancelRegister)="showRegister($event)"
+      />
+      
     </div>
   }
 </div>
