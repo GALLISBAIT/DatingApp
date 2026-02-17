@@ -12,6 +12,4 @@ export const authGuard: CanActivateFn = () => {
     toast.error('You shall not pass');
     return false;
   }
-
-  return true;
 };

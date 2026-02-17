@@ -1,5 +1,6 @@
 using API.Data;
 using API.Interfaces;
+using API.Middleware;
 using API.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -35,10 +36,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200", "https://localhost:4200"));
-
 // Configure the HTTPS pipeline
 
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200", "https://localhost:4200"));
 app.UseAuthentication();
 app.UseAuthorization();
 

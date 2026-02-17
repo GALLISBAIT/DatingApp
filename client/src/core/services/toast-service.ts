@@ -5,7 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class ToastService {
 
-  constructor() {this.createToastContainer }
+  constructor() {
+    this.createToastContainer();
+  }
 
   private createToastContainer() {
     if (!document.getElementById('toast-container')) {

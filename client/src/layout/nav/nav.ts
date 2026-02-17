@@ -13,7 +13,7 @@ import { ToastService } from '../../core/services/toast-service';
 })
 export class Nav
 {
-  protected accountService = inject(AccountService)
+  protected accountService = inject(AccountService);
   private router = inject(Router);
   private toast = inject(ToastService);
   protected creds: any = {}
