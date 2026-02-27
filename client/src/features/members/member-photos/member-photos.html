@@ -1,14 +1,14 @@
-﻿@if (photos$ | async; as photos) {
+@if (photos$ | async; as photos) {
 
     @if(photos.length > 0){
-<div class="grid h-[65vh] auto-rows-min grid-cols-4 gap-3 overflow-auto p-5">
-  @for (photo of photos; track photo.id) {
-  <img src="{{photo.url}}" alt="photo of member" class="w-full rounded-lg" />
-  }
-  @for (photo of photoMocks; track $index) {
-  <img src="{{photo.url}}" alt="photo of member" class="w-full rounded-lg" />
-  }
-</div>
+      <div class="grid h-[65vh] auto-rows-min grid-cols-4 gap-3 overflow-auto p-5">
+        @for (photo of photos; track photo.id) {
+        <img src="{{photo.url}}" alt="photo of member" class="w-full rounded-lg" />
+        }
+        @for (photo of photoMocks; track $index) {
+        <img src="{{photo.url}}" alt="photo of member" class="w-full rounded-lg" />
+        }
+      </div>
 
     }
 
