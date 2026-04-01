@@ -16,19 +16,17 @@ export class TextInput implements ControlValueAccessor {
     this.ngControl.valueAccessor = this;
   }
 
-
     writeValue(obj: any): void {
-        throw new Error('Method not implemented.');
+      return;
+
     }
     registerOnChange(fn: any): void {
-        throw new Error('Method not implemented.');
+      return;
     }
     registerOnTouched(fn: any): void {
-        throw new Error('Method not implemented.');
+      return;
     }
-    setDisabledState?(isDisabled: boolean): void {
-        throw new Error('Method not implemented.');
-  }
+
 
   get control(): FormControl {
     return this.ngControl.control as FormControl;
