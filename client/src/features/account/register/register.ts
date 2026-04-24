@@ -1,39 +1,51 @@
-import { Component, inject, OnInit, output } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Component, inject,output, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { RegisterCreds } from '../../../types/user';
 import { AccountService } from '../../../core/services/account-service';
-import { JsonPipe } from '@angular/common';
+import { TextInput } from '../../../Shared/text-input/text-input';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule,JsonPipe],
+  imports: [ReactiveFormsModule, TextInput],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register implements OnInit {
+export class Register {
 
   private accountService = inject(AccountService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
   protected creds = {} as RegisterCreds;
   cancelRegister = output<boolean>();
-  protected registerForm: FormGroup = new FormGroup({});
+  protected credentialsForm: FormGroup;
+  protected profileForm: FormGroup;
+  protected currentStep = signal(1);
+  protected validationErrors = signal<string[]>([]);
 
-  ngOnInit(): void {
-    this.initializeForm();
-  }
+  constructor() {
 
-  initializeForm() {
-    this.registerForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      displayName: new FormControl('', Validators.required),
-      password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
-      confirmPassword: new FormControl('', [Validators.required, this.matchValues('password')])
+    this.credentialsForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      displayName: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
+      confirmPassword: ['', [Validators.required, this.matchValues('password')]]
     })
 
-    this.registerForm.controls['password'].valueChanges.subscribe (() => {
-      this.registerForm.controls['confirmPassword'].updateValueAndValidity();
+    this.profileForm = this.fb.group({
+
+      gender: ['male', Validators.required],
+      dateOfBirth: ['', Validators.required],
+      city: ['', Validators.required],
+      country: ['', Validators.required],
+
     })
 
-  }
+    this.credentialsForm.controls['password'].valueChanges.subscribe(() => {
+      this.credentialsForm.controls['confirmPassword'].updateValueAndValidity();
+    })
+
+  } 
 
   matchValues(matchTo: string): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -45,20 +57,42 @@ export class Register implements OnInit {
     }
   }
 
+  nextStep() {
+    if (this.credentialsForm.valid) {
+      this.currentStep.update(prevStep => prevStep + 1);
+    }
+  }
+
+  prevStep() {
+    this.currentStep.update(prevStep => prevStep - 1);
+  }
+
 
   register() {
-    console.log(this.registerForm.value);
-  //  this.accountService.register(this.creds).subscribe({
-  //    next: response => {
-  //      console.log(response);
-  //      this.cancel();
-  //    },
-  //    error: error => console.log(error)
-  //  })
+    if (this.profileForm.valid && this.credentialsForm.valid) {
+      const formData = { ...this.credentialsForm.value, ...this.profileForm.value };
+
+      this.accountService.register(formData).subscribe({
+        next: () => {
+          this.router.navigateByUrl('/members');
+        },
+        error: error => {
+          console.log(error);
+          this.validationErrors.set(error)
+        }
+      })
+    }
+
   }
 
   cancel() {
     this.cancelRegister.emit(false);
+  }
+
+  getMaxDate() {
+    const today = new Date();
+    today.setFullYear(today.getFullYear() - 18);
+    return today.toISOString().split('T')[0];
   }
 
 }

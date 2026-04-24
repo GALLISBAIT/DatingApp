@@ -1,33 +1,94 @@
-<div class="card bg-base-100 mx-auto flex w-1/2 flex-col rounded-lg p-6 shadow-lg">
+﻿<div class="card bg-base-100 mx-auto flex w-1/2 flex-col rounded-lg p-6 shadow-lg">
   <div class="card-title text-primary justify-center text-3xl">
     Sign Up
   </div>
 
   <div class="card-body w-full">
-    <form [formGroup]="registerForm" class="flex w-full flex-col gap-4" (ngSubmit)="register()">
 
-      <app-text-input label="Email" formControlName="email" />
-      <app-text-input label="Display name" formControlName="displayName" />
-      <app-text-input label="Password" formControlName="password" type="password" />
-      <app-text-input label="Confirm Password" formControlName="confirmPassword" type="password" />
+    <ul class="steps">
+      <li class="step step-primary">Credentials</li>
+      <li class="step" [class.step-primary]="currentStep() === 2">Profile</li>
+    </ul>
 
-      <div class="flex items-center justify-end gap-3">
+    @if (currentStep()===1) {
+      <form [formGroup]="credentialsForm" class="steps flex w-full flex-col gap-4">
 
-        <button (click)="cancel()" type="button" class="btn">Cancel</button>
+        <app-text-input class="mt-2" label="Email" formControlName="email" />
+        <app-text-input label="Display name" formControlName="displayName" />
+        <app-text-input label="Password" formControlName="password" type="password" />
+        <app-text-input label="Confirm Password" formControlName="confirmPassword" type="password" />
 
-        <button [disabled]="!registerForm.valid"
-                class="btn btn-primary"
-                type="submit">
-          Register
-        </button>
+        <div class="flex items-center justify-end gap-3">
 
-      </div>
-    </form>
+          <button (click)="cancel()" type="button" class="btn">Cancel</button>
+
+          <button [disabled]="!credentialsForm.valid"
+                  (click)="nextStep()"
+                  class="btn btn-primary"
+                  type="button">
+            Next
+          </button>
+
+        </div>
+      </form>
+    }
+
+    @if (currentStep() === 2) {
+
+      <form [formGroup]="profileForm" class="steps flex w-full flex-col gap-4">
+
+        <div class="flex items-center gap-4">
+          <div class="font-semibold">Gender:</div>
+          <label class="flex items-center gap-3">
+            <span>Male</span>
+            <input type="radio" formControlName="gender" value="male"
+                   class="radio radio-primary">
+          </label>
+
+          <label class="flex items-center gap-3">
+            <span>Female</span>
+            <input type="radio" formControlName="gender" value="female"
+                   class="radio radio-primary">
+          </label>
+
+        </div>
+
+        <app-text-input [maxDate]="getMaxDate()"
+                        type="date"
+                        label="Date of Birth"
+                        formControlName="dateOfBirth" />
+
+        <app-text-input label="City" formControlName="city" />
+        <app-text-input label="Country" formControlName="country" />
+
+        <div class="flex items-center justify-end gap-3">
+
+          <button (click)="prevStep()" type="button" class="btn">Back</button>
+
+          <button [disabled]="!profileForm.valid"
+                  (click)="register()"
+                  class="btn btn-primary"
+                  type="button">
+            Register
+          </button>
+
+        </div>
+      </form>
+    }
+
+
   </div>
 
-  <div class="mockup-code flex w-full flex-col items-start px-3 text-lg">
-    <div> Form vaue: {{registerForm.value | json}}</div>
-    <div> Form status: {{registerForm.status | json}}</div>
-  </div>
+  @if (validationErrors().length > 0) {
+
+    <div class="mx-auto mt-5 flex w-1/2 rounded-2xl bg-gray-200 p-3">
+      <ul class="fex-col text-error flex space-y-1">
+        @for (error of validationErrors(); track $index) {
+          <li>{{error}}</li>
+        }
+      </ul>
+    </div>
+
+  }
 
 </div>
