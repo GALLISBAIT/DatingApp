@@ -20,7 +20,7 @@
                                [routerLinkActiveOptions]="{exact: true}">
         Matches
       </a>
-      <a routerLink="/list" routerLinkActive="text-accent">Lists</a>
+      <a routerLink="/lists" routerLinkActive="text-accent">Lists</a>
       <a routerLink="/messages" routerLinkActive="text-accent">Messages</a>
       }
       <a routerLink="/errors" routerLinkActive="text-accent">Errors</a>
@@ -59,7 +59,7 @@
           <span>{{user.displayName}}</span>
         </div>
         <ul tabindex="-1" class="dropdown-content dropdown-end menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-          <li><a routerLink="/member/{{user.id}}">Edit Profile</a></li>
+          <li><a routerLink="/members/{{user.id}}">Edit Profile</a></li>
           <li><a (click)="logout()">Logout</a></li>
         </ul>
       </div>
